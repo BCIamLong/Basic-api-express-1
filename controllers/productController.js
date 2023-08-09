@@ -1,11 +1,19 @@
 const Product = require("../models/productModel");
+const APIFeatures = require("../utils/apiFeatures");
 
-const getAllProduct = async (_, res) => {
+const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const count = await Product.countDocuments({});
+    const apiFeatures = new APIFeatures(Product.find(), req.query)
+      .filter()
+      .sort()
+      .select()
+      .pagination(count);
+    const products = await apiFeatures.query;
 
     res.status(200).json({
       status: "success",
+      results: products.length,
       dada: {
         products,
       },
@@ -14,8 +22,15 @@ const getAllProduct = async (_, res) => {
     res.status(404).json({
       status: "Fails",
       message: "data not found",
+      error: err.message,
     });
   }
 };
 
-module.exports = { getAllProduct };
+const aliasTop6PremiumProduct = (req, _, next) => {
+  req.query.limit = "6";
+  req.query.sort = "-price";
+  next();
+};
+
+module.exports = { getAllProducts, aliasTop6PremiumProduct };

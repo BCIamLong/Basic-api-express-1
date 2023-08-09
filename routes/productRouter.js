@@ -1,8 +1,15 @@
 const express = require("express");
-const { getAllProduct } = require("../controllers/productController");
+const {
+  getAllProducts,
+  aliasTop6PremiumProduct,
+} = require("../controllers/productController");
 
 const router = express.Router();
 
-router.route("/").get(getAllProduct);
+router
+  .route("/top-6-premium-products")
+  .get(aliasTop6PremiumProduct, getAllProducts);
+
+router.route("/").get(getAllProducts);
 
 module.exports = router;

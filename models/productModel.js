@@ -2,10 +2,27 @@ const { default: mongoose } = require("mongoose");
 const mogoose = require("mongoose");
 
 const productSchema = new mogoose.Schema({
-  name: {
+  title: {
     type: String,
-    required: [true, "Name is required field"],
+    required: [true, "Product must have a title"],
   },
+  description: {
+    type: String,
+    required: [true, "Product must have a description"],
+  },
+  category: {
+    type: String,
+    required: [true, "Product must have category"],
+  },
+  brand: {
+    type: String,
+    required: [true, "Product must have a brand"],
+  },
+  thumbnail: {
+    type: String,
+    required: [true, "Product must have a image"],
+  },
+  images: [String],
   price: {
     type: Number,
     required: [true, "Price is required field"],
@@ -14,8 +31,13 @@ const productSchema = new mogoose.Schema({
     type: Number,
     default: 4.5,
   },
-  author: {
-    type: String,
+  discountPercentage: {
+    type: Number,
+    default: 0,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
 });
 

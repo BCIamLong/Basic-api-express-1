@@ -1,0 +1,112 @@
+[
+  {
+    "title": "iPhone 9",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 549,
+    "discountPercentage": 12.96,
+    "rating": 4.69,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 10",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 600,
+    "discountPercentage": 15.96,
+    "rating": 4.49,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 11",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 700,
+    "discountPercentage": 16.96,
+    "rating": 4.56,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 12",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 800,
+    "discountPercentage": 19.96,
+    "rating": 4.7,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 13",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 900,
+    "discountPercentage": 20.96,
+    "rating": 4.8,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 9A",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 559,
+    "discountPercentage": 12.99,
+    "rating": 4.68,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 9B",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 539,
+    "discountPercentage": 11.96,
+    "rating": 4.19,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 9C",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 599,
+    "discountPercentage": 14.96,
+    "rating": 4.29,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 9D",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 549,
+    "discountPercentage": 12.96,
+    "rating": 4.69,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  },
+  {
+    "title": "iPhone 14",
+    "description": "An apple mobile which is nothing like apple",
+    "price": 1000,
+    "discountPercentage": 30.96,
+    "rating": 4.75,
+    "brand": "Apple",
+    "category": "smartphones",
+    "thumbnail": "...",
+    "images": ["...", "...", "..."]
+  }
+]
