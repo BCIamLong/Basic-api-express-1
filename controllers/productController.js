@@ -1,31 +1,73 @@
 const Product = require("../models/productModel");
 const APIFeatures = require("../utils/apiFeatures");
+const AppError = require("../utils/appError");
+const asyncCatch = require("../utils/asyncCatch");
 
-const getAllProducts = async (req, res) => {
-  try {
-    const count = await Product.countDocuments({});
-    const apiFeatures = new APIFeatures(Product.find(), req.query)
-      .filter()
-      .sort()
-      .select()
-      .pagination(count);
-    const products = await apiFeatures.query;
+const getAllProducts = asyncCatch(async (req, res) => {
+  const count = await Product.countDocuments({});
+  const apiFeatures = new APIFeatures(Product.find(), req.query)
+    .filter()
+    .sort()
+    .select()
+    .pagination(count);
+  const products = await apiFeatures.query;
 
-    res.status(200).json({
-      status: "success",
-      results: products.length,
-      dada: {
-        products,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "Fails",
-      message: "data not found",
-      error: err.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    results: products.length,
+    dada: {
+      products,
+    },
+  });
+});
+
+const getProduct = asyncCatch(async (req, res, next) => {
+  const tour = await Product.findById(req.params.id);
+
+  if (!tour) return next(new AppError("Invalid id", 404));
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour,
+    },
+  });
+});
+
+const createProduct = asyncCatch(async (req, res, next) => {
+  const tour = await Product.create(req.body);
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour,
+    },
+  });
+});
+
+const updateProduct = asyncCatch(async (req, res, next) => {
+  const tour = await Product.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    {
+      runValidators: true,
+    },
+  );
+  if (!tour) return next(new AppError("Invalid id", 404));
+  res.status(201).json({
+    status: "success",
+    data: {
+      tour,
+    },
+  });
+});
+
+const deleteProduct = asyncCatch(async (req, res, next) => {
+  const tour = await Product.findOneAndDelete({ _id: req.params.id });
+  if (!tour) return next(new AppError("Invalid id", 404));
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
 
 const aliasTop6PremiumProduct = (req, _, next) => {
   req.query.limit = "6";
@@ -49,63 +91,55 @@ const checkReq = (req, res, next) => {
   next();
 };
 //GET STATISTICS OF PHONE BASED ON BRAND, CATEGORY
-const getProductStats = async (req, res) => {
-  try {
-    const { brand, category } = req.params;
-    const stats = await Product.aggregate([
-      // {
-      //   $match: { brand: `${brand}`, category: `${category}` },
-      // },
-      {
-        $group: {
-          _id: { brand: `${brand}`, category: `${category}` },
-          avgPrice: { $avg: "$price" },
-          avgRating: { $avg: "$rating" },
-          avgDiscount: { $avg: "$discountPercentage" },
-          maxPrice: { $max: "$price" },
-          minPrice: { $min: "$price" },
-          maxRating: { $max: "$rating" },
-          minRating: { $min: "$rating" },
-          maxDiscount: { $max: "$discountPercentage" },
-          minDiscount: { $min: "$discountPercentage" },
-          totalProduct: { $sum: 1 },
-          totalPrice: { $sum: "$price" },
-        },
+const getProductStats = asyncCatch(async (req, res) => {
+  const { brand, category } = req.params;
+  const stats = await Product.aggregate([
+    // {
+    //   $match: { brand: `${brand}`, category: `${category}` },
+    // },
+    {
+      $group: {
+        _id: { brand: `${brand}`, category: `${category}` },
+        avgPrice: { $avg: "$price" },
+        avgRating: { $avg: "$rating" },
+        avgDiscount: { $avg: "$discountPercentage" },
+        maxPrice: { $max: "$price" },
+        minPrice: { $min: "$price" },
+        maxRating: { $max: "$rating" },
+        minRating: { $min: "$rating" },
+        maxDiscount: { $max: "$discountPercentage" },
+        minDiscount: { $min: "$discountPercentage" },
+        totalProduct: { $sum: 1 },
+        totalPrice: { $sum: "$price" },
       },
-      {
-        $project: {
-          _id: 0,
-          info: "$_id",
-          avgPrice: 1,
-          avgRating: 1,
-          avgDiscount: 1,
-          maxPrice: 1,
-          minPrice: 1,
-          maxRating: 1,
-          minRating: 1,
-          maxDiscount: 1,
-          minDiscount: 1,
-          totalProduct: 1,
-          totalPrice: 1,
-        },
+    },
+    {
+      $project: {
+        _id: 0,
+        info: "$_id",
+        avgPrice: 1,
+        avgRating: 1,
+        avgDiscount: 1,
+        maxPrice: 1,
+        minPrice: 1,
+        maxRating: 1,
+        minRating: 1,
+        maxDiscount: 1,
+        minDiscount: 1,
+        totalProduct: 1,
+        totalPrice: 1,
       },
-    ]);
+    },
+  ]);
 
-    res.status(200).json({
-      status: "Success",
-      results: stats.length,
-      data: {
-        stats,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "Fails",
-      message: "Can'\t request",
-      error: err.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: "Success",
+    results: stats.length,
+    data: {
+      stats,
+    },
+  });
+});
 
 module.exports = {
   getAllProducts,
@@ -113,4 +147,8 @@ module.exports = {
   getProductStats,
   formatBrandReq,
   checkReq,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
 };

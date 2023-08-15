@@ -5,6 +5,10 @@ const {
   getProductStats,
   formatBrandReq,
   checkReq,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getProduct,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -19,6 +23,7 @@ router
   .route("/products-stats/:brand/:category")
   .get(formatBrandReq, getProductStats); // you should give it here
 
-router.route("/").get(getAllProducts);
+router.route("/").get(getAllProducts).post(createProduct);
+router.route("/:id").get(getProduct).patch(updateProduct).delete(deleteProduct);
 
 module.exports = router;
