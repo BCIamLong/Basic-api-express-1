@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const productsRouter = require("./routes/productRouter");
+const userRouter = require("./routes/userRouter");
 const errorsHandler = require("./middlewares/errorsHandler");
 const AppError = require("./utils/appError");
 
@@ -15,6 +16,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/products", productsRouter);
+app.use("/api/v1/users", userRouter);
 
 //handle error for router not found
 app.all("*", (req, res, next) => {

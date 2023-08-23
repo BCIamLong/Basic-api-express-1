@@ -29,24 +29,33 @@ const sendErrorHandlerProd = (err, res) => {
   });
 };
 
-const errorValidationHandler = (err) => {
+const errorValidationHandler = err => {
   const message = Object.values(err.errors)
-    .map((el) => el.message)
+    .map(el => el.message)
     .join(". ");
   return new AppError(message, 400);
 };
 
-const errorCastHandler = (err) => {
+const errorCastHandler = err => {
   const message = `Invalid id: ${err.path}: ${err.value}`;
   return new AppError(message, 400);
 };
 
-const errorDuplicateHandler = (err) => {
+const errorDuplicateHandler = err => {
   const message = `This ${
     Object.keys(err.keyValue)[0]
   } was exits, please use other data`;
   return new AppError(message, 400);
 };
+
+const errorJWTExpiredHandler = () =>
+  new AppError("Your login turn was expired, please login again", 401);
+
+const errorJWTHandler = () =>
+  new AppError(
+    "Your login turn not security, please contact with us to know detail", // for example when the payload in token maybe change by 3rd party
+    401,
+  );
 
 module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === "development") sendErrorHandlerDev(err, res);
@@ -57,6 +66,9 @@ module.exports = (err, req, res, next) => {
     if (errProd.reason?.name === "BSONError")
       errProd = errorCastHandler(errProd);
     if (errProd.code === 11000) errProd = errorDuplicateHandler(errProd);
+    if (errProd.name === "JsonWebTokenError") errProd = errorJWTHandler();
+    if (errProd.name === "TokenExpiredError")
+      errProd = errorJWTExpiredHandler();
 
     sendErrorHandlerProd(errProd, res);
   }
